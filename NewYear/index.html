@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year Celebration</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: radial-gradient(circle, #1a1a2e, #16213e, #0f3460);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .firework {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            animation: explode 2.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            30% {
+                opacity: 0.9;
+                transform: scale(2);
+            }
+            60% {
+                opacity: 0.7;
+                transform: scale(3.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(5);
+            }
+        }
+
+        h1 {
+            font-size: 5em;
+            margin: 0;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 75, 43, 0.7);
+            animation: glow 2.5s infinite alternate;
+            letter-spacing: 3px;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 0 60px rgba(255, 75, 43, 0.7);
+            }
+            100% {
+                text-shadow: 0 0 50px rgba(255, 255, 255, 1), 0 0 80px rgba(255, 123, 67, 0.9);
+            }
+        }
+
+        .countdown {
+            font-size: 2.5em;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 1.3em;
+            color: #fff;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 75, 43, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div class="fireworks" id="fireworks"></div>
+    <h1>🎇 Welcome 2025! 🎇</h1>
+    <div class="countdown" id="countdown">Countdown: 00:00:00</div>
+    <div class="button-container">
+        <button class="button" onclick="toggleFireworks()">Toggle Fireworks</button>
+        <button class="button" onclick="resetCountdown()">Reset Countdown</button>
+    </div>
+
+    <script>
+        const fireworksContainer = document.getElementById('fireworks');
+        const countdown = document.getElementById('countdown');
+        let fireworksEnabled = true;
+
+        function createFirework() {
+            if (!fireworksEnabled) return;
+
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 50 + 'vh';
+            firework.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            firework.style.animationDuration = (1.5 + Math.random() * 1) + 's';
+            fireworksContainer.appendChild(firework);
+
+            setTimeout(() => {
+                firework.remove();
+            }, 2500);
+        }
+
+        setInterval(createFirework, 300);
+
+        function updateCountdown() {
+            const newYear = new Date('January 1, 2025 00:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = newYear - now;
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+            const seconds = Math.floor((timeLeft / 1000) % 60);
+
+            countdown.textContent = `Countdown: ${String(days).padStart(2, '0')}d ${String(hours).padStart(2, '0')}h:${String(minutes).padStart(2, '0')}m:${String(seconds).padStart(2, '0')}s`;
+        }
+
+        function toggleFireworks() {
+            fireworksEnabled = !fireworksEnabled;
+        }
+
+        function resetCountdown() {
+            countdown.textContent = "Countdown: 00:00:00";
+        }
+
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
